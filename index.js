@@ -7,17 +7,25 @@ var express = require('express')
 app.set('port', (process.env.PORT || 8080));
 
 app.get('/', function (req, res) {
+
+  /*sessionStorage.setItem("MyId", 123);
+  var value = sessionStorage.getItem("MyId");
+  value = value + „4“;
+  .setItem („xyz“, value);*/
+
+  var text = "req: " + req.query.command + " --> ";
   if(req.query.command == ""){
-	res.send("{ \"command\":\"" + last_value + "\"}");
+    //Bei Testen des Skills sehen wir immer den "command", da wir mit leerem command das gespeicherte abfragen
+    text = "{\"command\": \"" + last_value + "\"}";
   }else{
-	if(req.query.command == "empty"){
-		last_value = "";
-		res.send("{}");
-	}else{
-		res.send("{ \"command\":\"" + req.query.command + "\"}");
-		last_value = req.query.command;
-	}
-  }
+  	if(req.query.command == "empty"){
+  		last_value = "";
+  		text = "{}"
+  	}else{
+      last_value = req.query.command;
+      text = text + "{ \"new_command\": \"" + last_value + "\"}";
+  	}
+  } res.send(text);
 })
 
 app.listen(app.get('port'), function () {
